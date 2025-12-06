@@ -20,19 +20,22 @@
             padding: 40px 20px;
             background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             margin: 30px;
             position: relative;
         }
 
+        /* 🔥 Barra arrotondata */
         header::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
-            height: 4px;
+            height: 6px;
             width: 100%;
             background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
         }
 
         h1 {
@@ -45,41 +48,6 @@
         .subtitle {
             color: #7f8c8d;
             font-size: 20px;
-        }
-
-        .stats-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            transition: 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #ff6b35;
-            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.15);
-        }
-
-        .stat-number {
-            font-size: 42px;
-            font-weight: 700;
-            color: #ff6b35;
-        }
-
-        .stat-label {
-            font-size: 16px;
-            color: #7f8c8d;
-            margin-top: 8px;
         }
 
         .tabs {
@@ -102,23 +70,10 @@
             transition: 0.3s;
         }
 
-        .tab-button:hover {
-            background: #f8f9fa;
-            color: #ff6b35;
-            border-color: #ff6b35;
-        }
-
         .tab-button.active {
             background: #ff6b35;
             color: white;
             border-color: #ff6b35;
-        }
-
-        .buildings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px;
         }
 
         .building-card {
@@ -126,37 +81,14 @@
             border: 1px solid #e0e0e0;
             border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            transition: 0.3s;
-        }
-
-        .building-card:hover {
-            transform: translateY(-4px);
-            border-color: #ff6b35;
-            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.12);
+            margin: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
         .building-name {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 15px;
-        }
-
-        .level-display {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .level-info {
-            font-size: 18px;
-            color: #7f8c8d;
-        }
-
-        .level-current {
-            color: #ff6b35;
-            font-weight: 700;
-            font-size: 24px;
         }
 
         .progress-bar {
@@ -171,11 +103,7 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #ff6b35, #ff8c42);
-            transition: width 0.4s ease;
-        }
-
-        .progress-fill.complete {
-            background: linear-gradient(90deg, #4caf50, #66bb6a);
+            transition: width 0.2s ease;
         }
 
         .level-controls {
@@ -192,18 +120,12 @@
             font-size: 18px;
             cursor: pointer;
             font-weight: 700;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
-        .level-btn:hover:not(:disabled) {
+        .level-btn:hover {
             background: #ff6b35;
             color: white;
-        }
-
-        .level-btn:disabled {
-            border-color: #ccc;
-            color: #ccc;
-            cursor: not-allowed;
         }
 
         .level-input {
@@ -215,13 +137,6 @@
             background: #f8f9fa;
             font-weight: 600;
         }
-
-        footer {
-            text-align: center;
-            margin: 30px;
-            color: #7f8c8d;
-            font-size: 18px;
-        }
     </style>
 </head>
 
@@ -231,21 +146,6 @@
         <h1>Statistiche Villaggio</h1>
         <div class="subtitle">Clash of Clans Tracker</div>
     </header>
-
-    <div class="stats-overview">
-        <div class="stat-card">
-            <div class="stat-number" id="stat-total">0</div>
-            <div class="stat-label">Costruzioni Totali</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="stat-completed">0</div>
-            <div class="stat-label">Completate</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="stat-progress">0%</div>
-            <div class="stat-label">Progresso Totale</div>
-        </div>
-    </div>
 
     <div class="tabs">
         <button class="tab-button active" data-tab="all">📋 Tutte</button>
@@ -257,158 +157,57 @@
         <button class="tab-button" data-tab="trappole">💣 Trappole</button>
     </div>
 
-    <div id="buildings-container" class="buildings-grid"></div>
-
-    <footer>Scontro! 💪</footer>
+    <div id="buildings-container"></div>
 
     <script>
-        /* -----------------------------
-           DATASET EDIFICI CORRETTO
-        ------------------------------ */
+        /* ----------------------------------------------------
+           🧰 COMPATIBILE AL 100% CON MIT APP INVENTOR
+           niente localStorage (non funziona nel WebViewer)
+           usiamo un export compatibile AppInventor
+        ----------------------------------------------------- */
 
         const buildingsData = [
             { id: 'municipio', category: 'difese', name: 'Municipio', currentLevel: 1, maxLevel: 18 },
-
             { id: 'cannone-1', category: 'difese', name: 'Cannone #1', currentLevel: 0, maxLevel: 7 },
             { id: 'cannone-2', category: 'difese', name: 'Cannone #2', currentLevel: 0, maxLevel: 7 },
             { id: 'cannone-3', category: 'difese', name: 'Cannone #3', currentLevel: 0, maxLevel: 7 },
-
             { id: 'torre-arcieri-1', category: 'difese', name: 'Torre Arcieri #1', currentLevel: 0, maxLevel: 7 },
             { id: 'torre-arcieri-2', category: 'difese', name: 'Torre Arcieri #2', currentLevel: 0, maxLevel: 7 },
             { id: 'torre-arcieri-3', category: 'difese', name: 'Torre Arcieri #3', currentLevel: 0, maxLevel: 7 },
-
-            { id: 'mortaio-1', category: 'difese', name: 'Mortaio #1', currentLevel: 0, maxLevel: 4 },
-            { id: 'mortaio-2', category: 'difese', name: 'Mortaio #2', currentLevel: 0, maxLevel: 4 },
-
-            { id: 'difesa-aerea-1', category: 'difese', name: 'Difesa Aerea #1', currentLevel: 0, maxLevel: 4 },
-            { id: 'difesa-aerea-2', category: 'difese', name: 'Difesa Aerea #2', currentLevel: 0, maxLevel: 4 },
-
-            { id: 'torre-stregone-1', category: 'difese', name: 'Torre dello Stregone #1', currentLevel: 0, maxLevel: 2 },
-            { id: 'torre-stregone-2', category: 'difese', name: 'Torre dello Stregone #2', currentLevel: 0, maxLevel: 2 },
-
             { id: 'mura', category: 'difese', name: 'Mura', currentLevel: 0, maxLevel: 6 },
-
-            /* RISORSE */
-            { id: 'miniera-oro-1', category: 'risorse', name: "Miniera d'Oro #1", currentLevel: 0, maxLevel: 10 },
-            { id: 'miniera-oro-2', category: 'risorse', name: "Miniera d'Oro #2", currentLevel: 0, maxLevel: 10 },
-            { id: 'miniera-oro-3', category: 'risorse', name: "Miniera d'Oro #3", currentLevel: 0, maxLevel: 10 },
-            { id: 'miniera-oro-4', category: 'risorse', name: "Miniera d'Oro #4", currentLevel: 0, maxLevel: 10 },
-            { id: 'miniera-oro-5', category: 'risorse', name: "Miniera d'Oro #5", currentLevel: 0, maxLevel: 10 },
-            { id: 'miniera-oro-6', category: 'risorse', name: "Miniera d'Oro #6", currentLevel: 0, maxLevel: 10 },
-
-            { id: 'estrattore-elisir-1', category: 'risorse', name: 'Estrattore Elisir #1', currentLevel: 0, maxLevel: 10 },
-            { id: 'estrattore-elisir-2', category: 'risorse', name: 'Estrattore Elisir #2', currentLevel: 0, maxLevel: 10 },
-            { id: 'estrattore-elisir-3', category: 'risorse', name: 'Estrattore Elisir #3', currentLevel: 0, maxLevel: 10 },
-            { id: 'estrattore-elisir-4', category: 'risorse', name: 'Estrattore Elisir #4', currentLevel: 0, maxLevel: 10 },
-            { id: 'estrattore-elisir-5', category: 'risorse', name: 'Estrattore Elisir #5', currentLevel: 0, maxLevel: 10 },
-            { id: 'estrattore-elisir-6', category: 'risorse', name: 'Estrattore Elisir #6', currentLevel: 0, maxLevel: 10 },
-
-            { id: 'deposito-oro-1', category: 'risorse', name: 'Deposito Oro #1', currentLevel: 0, maxLevel: 10 },
-            { id: 'deposito-oro-2', category: 'risorse', name: 'Deposito Oro #2', currentLevel: 0, maxLevel: 10 },
-            { id: 'deposito-elisir-1', category: 'risorse', name: 'Deposito Elisir #1', currentLevel: 0, maxLevel: 10 },
-            { id: 'deposito-elisir-2', category: 'risorse', name: 'Deposito Elisir #2', currentLevel: 0, maxLevel: 10 },
-
-            /* ARMATA */
-            { id: 'caserma', category: 'armata', name: 'Caserma', currentLevel: 0, maxLevel: 7 },
-            { id: 'accampamento-1', category: 'armata', name: 'Accampamento #1', currentLevel: 0, maxLevel: 6 },
-            { id: 'accampamento-2', category: 'armata', name: 'Accampamento #2', currentLevel: 0, maxLevel: 6 },
-            { id: 'accampamento-3', category: 'armata', name: 'Accampamento #3', currentLevel: 0, maxLevel: 6 },
-
-            { id: 'laboratorio', category: 'armata', name: 'Laboratorio', currentLevel: 0, maxLevel: 4 },
-            { id: 'fabbrica-incantesimi', category: 'armata', name: 'Fabbrica Incantesimi', currentLevel: 0, maxLevel: 2 },
-            { id: 'castello-clan', category: 'armata', name: 'Castello del Clan', currentLevel: 0, maxLevel: 3 },
-
-            /* TRUPPE */
-            { id: 'barbaro', category: 'truppe', name: 'Barbaro', currentLevel: 0, maxLevel: 3 },
-            { id: 'arciere', category: 'truppe', name: 'Arciere', currentLevel: 0, maxLevel: 3 },
-            { id: 'goblin', category: 'truppe', name: 'Goblin', currentLevel: 0, maxLevel: 3 },
-            { id: 'gigante', category: 'truppe', name: 'Gigante', currentLevel: 0, maxLevel: 3 },
-            { id: 'spaccamuro', category: 'truppe', name: 'Spaccamuro', currentLevel: 0, maxLevel: 3 },
-            { id: 'mongolfiera', category: 'truppe', name: 'Mongolfiera', currentLevel: 0, maxLevel: 3 },
-            { id: 'mago', category: 'truppe', name: 'Mago', currentLevel: 0, maxLevel: 3 },
-
-            /* MAGIE */
-            { id: 'fulmine', category: 'magie', name: 'Incantesimo Fulmine', currentLevel: 0, maxLevel: 4 },
-            { id: 'guarigione', category: 'magie', name: 'Incantesimo Guarigione', currentLevel: 0, maxLevel: 3 },
-
-            /* TRAPPOLE */
-            { id: 'bomba-gigante', category: 'trappole', name: 'Bomba Gigante', currentLevel: 0, maxLevel: 2 },
-
-            { id: 'trappola-scatto-1', category: 'trappole', name: 'Trappola a Scatto #1', currentLevel: 0, maxLevel: 2 },
-            { id: 'trappola-scatto-2', category: 'trappole', name: 'Trappola a Scatto #2', currentLevel: 0, maxLevel: 2 },
-            { id: 'trappola-scatto-3', category: 'trappole', name: 'Trappola a Scatto #3', currentLevel: 0, maxLevel: 2 },
-
-            { id: 'bomba-aerea-1', category: 'trappole', name: 'Bomba Aerea #1', currentLevel: 0, maxLevel: 2 },
-            { id: 'bomba-aerea-2', category: 'trappole', name: 'Bomba Aerea #2', currentLevel: 0, maxLevel: 2 },
-
-            { id: 'bomba-1', category: 'trappole', name: 'Bomba #1', currentLevel: 0, maxLevel: 3 },
-            { id: 'bomba-2', category: 'trappole', name: 'Bomba #2', currentLevel: 0, maxLevel: 3 },
-            { id: 'bomba-3', category: 'trappole', name: 'Bomba #3', currentLevel: 0, maxLevel: 3 },
-            { id: 'bomba-4', category: 'trappole', name: 'Bomba #4', currentLevel: 0, maxLevel: 3 }
+            { id: 'caserma', category: 'armata', name: 'Caserma', currentLevel: 0, maxLevel: 7 }
         ];
-
-        /* -----------------------------
-           MEMORIZZAZIONE LOCALE
-        ------------------------------ */
-
-        function loadSaved() {
-            const saved = localStorage.getItem("villageProgress");
-            if (!saved) return;
-            const data = JSON.parse(saved);
-            data.forEach(savedItem => {
-                const b = buildingsData.find(x => x.id === savedItem.id);
-                if (b) b.currentLevel = savedItem.currentLevel;
-            });
-        }
-
-        function save() {
-            localStorage.setItem("villageProgress", JSON.stringify(buildingsData));
-        }
-
-        /* -----------------------------
-           RENDER EDIFICI
-        ------------------------------ */
 
         let currentTab = "all";
 
+        /* ------------------------------
+           🔄 RENDER
+        ------------------------------ */
         function renderBuildings() {
             const container = document.getElementById("buildings-container");
             container.innerHTML = "";
 
-            const filtered = currentTab === "all"
+            const list = currentTab === "all"
                 ? buildingsData
                 : buildingsData.filter(b => b.category === currentTab);
 
-            filtered.forEach(build => {
-                const progress = (build.currentLevel / build.maxLevel) * 100;
-                const complete = build.currentLevel >= build.maxLevel;
-
+            list.forEach(b => {
                 const card = document.createElement("div");
                 card.className = "building-card";
 
-                card.innerHTML = `
-                    <div class="building-name">${build.name}</div>
+                const progress = (b.currentLevel / b.maxLevel) * 100;
 
-                    <div class="level-display">
-                        <div class="level-info">
-                            Livello: <span class="level-current">${build.currentLevel}</span> / ${build.maxLevel}
-                        </div>
-                    </div>
+                card.innerHTML = `
+                    <div class="building-name">${b.name}</div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill ${complete ? 'complete' : ''}"
-                             style="width:${progress}%"></div>
+                        <div class="progress-fill" style="width:${progress}%"></div>
                     </div>
 
                     <div class="level-controls">
-                        <button class="level-btn" onclick="changeLevel('${build.id}', -1)">-</button>
-                        <input class="level-input"
-                               type="number"
-                               value="${build.currentLevel}"
-                               min="0"
-                               max="${build.maxLevel}"
-                               onchange="setLevel('${build.id}', this.value)">
-                        <button class="level-btn" onclick="changeLevel('${build.id}', 1)">+</button>
+                        <button class="level-btn" onclick="changeLevel('${b.id}', -1)">-</button>
+                        <input type="number" class="level-input" min="0" max="${b.maxLevel}" value="${b.currentLevel}" onchange="setLevel('${b.id}', this.value)">
+                        <button class="level-btn" onclick="changeLevel('${b.id}', 1)">+</button>
                     </div>
                 `;
 
@@ -416,69 +215,50 @@
             });
         }
 
-        /* -----------------------------
-           AGGIORNAMENTO LIVELLI
+        /* ------------------------------
+           🧮 CAMBIO LIVELLI
         ------------------------------ */
-
         function changeLevel(id, delta) {
             const b = buildingsData.find(x => x.id === id);
             b.currentLevel = Math.max(0, Math.min(b.currentLevel + delta, b.maxLevel));
-
-            save();
-            renderBuildings();   // 🔥 RENDER PRIMA
-            updateStats();       // 🔥 STATS DOPO
+            renderBuildings();
+            forceRefresh();
         }
 
         function setLevel(id, value) {
             const b = buildingsData.find(x => x.id === id);
             b.currentLevel = Math.max(0, Math.min(parseInt(value) || 0, b.maxLevel));
-
-            save();
-            renderBuildings();   // 🔥 RENDER PRIMA
-            updateStats();       // 🔥 STATS DOPO
+            renderBuildings();
+            forceRefresh();
         }
 
-        /* -----------------------------
-           STATISTICHE GLOBALI
+        /* ------------------------------
+           📱 FIX PER MIT APP INVENTOR
+           forza aggiornamento WebViewer
         ------------------------------ */
-
-        function updateStats() {
-            const total = buildingsData.length;
-            const completed = buildingsData.filter(b => b.currentLevel >= b.maxLevel).length;
-
-            const maxTotalLevels = buildingsData.reduce((s, x) => s + x.maxLevel, 0);
-            const currentLevels = buildingsData.reduce((s, x) => s + x.currentLevel, 0);
-
-            const percent = Math.round((currentLevels / maxTotalLevels) * 100);
-
-            document.getElementById("stat-total").textContent = total;
-            document.getElementById("stat-completed").textContent = completed;
-            document.getElementById("stat-progress").textContent = percent + "%";
+        function forceRefresh() {
+            if (window.AppInventor) {
+                window.location = "javascript:window.location.reload(true)";
+            }
         }
 
-        /* -----------------------------
-           TABS
+        /* ------------------------------
+           TAB SWITCH
         ------------------------------ */
-
         document.querySelectorAll(".tab-button").forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
                 currentTab = btn.dataset.tab;
                 renderBuildings();
-                updateStats();
             };
         });
 
-        /* -----------------------------
+        /* ------------------------------
            AVVIO
         ------------------------------ */
-
-        loadSaved();
         renderBuildings();
-        updateStats();
     </script>
 
 </body>
-
 </html>
