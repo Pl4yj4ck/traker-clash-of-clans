@@ -261,7 +261,6 @@
 
     <footer>Scontro! 💪</footer>
 
-
     <script>
         /* -----------------------------
            DATASET EDIFICI CORRETTO
@@ -355,11 +354,10 @@
         function loadSaved() {
             const saved = localStorage.getItem("villageProgress");
             if (!saved) return;
-
             const data = JSON.parse(saved);
-            data.forEach(s => {
-                const b = buildingsData.find(x => x.id === s.id);
-                if (b) b.currentLevel = s.currentLevel;
+            data.forEach(savedItem => {
+                const b = buildingsData.find(x => x.id === savedItem.id);
+                if (b) b.currentLevel = savedItem.currentLevel;
             });
         }
 
@@ -387,9 +385,10 @@
 
                 const card = document.createElement("div");
                 card.className = "building-card";
+
                 card.innerHTML = `
                     <div class="building-name">${build.name}</div>
-                    
+
                     <div class="level-display">
                         <div class="level-info">
                             Livello: <span class="level-current">${build.currentLevel}</span> / ${build.maxLevel}
@@ -403,9 +402,12 @@
 
                     <div class="level-controls">
                         <button class="level-btn" onclick="changeLevel('${build.id}', -1)">-</button>
-                        <input type="number" class="level-input" value="${build.currentLevel}"
-                            min="0" max="${build.maxLevel}"
-                            onchange="setLevel('${build.id}', this.value)">
+                        <input class="level-input"
+                               type="number"
+                               value="${build.currentLevel}"
+                               min="0"
+                               max="${build.maxLevel}"
+                               onchange="setLevel('${build.id}', this.value)">
                         <button class="level-btn" onclick="changeLevel('${build.id}', 1)">+</button>
                     </div>
                 `;
@@ -421,17 +423,19 @@
         function changeLevel(id, delta) {
             const b = buildingsData.find(x => x.id === id);
             b.currentLevel = Math.max(0, Math.min(b.currentLevel + delta, b.maxLevel));
+
             save();
-            updateStats();
-            renderBuildings();
+            renderBuildings();   // 🔥 RENDER PRIMA
+            updateStats();       // 🔥 STATS DOPO
         }
 
         function setLevel(id, value) {
             const b = buildingsData.find(x => x.id === id);
             b.currentLevel = Math.max(0, Math.min(parseInt(value) || 0, b.maxLevel));
+
             save();
-            updateStats();
-            renderBuildings();
+            renderBuildings();   // 🔥 RENDER PRIMA
+            updateStats();       // 🔥 STATS DOPO
         }
 
         /* -----------------------------
@@ -462,11 +466,12 @@
                 btn.classList.add("active");
                 currentTab = btn.dataset.tab;
                 renderBuildings();
+                updateStats();
             };
         });
 
         /* -----------------------------
-           START
+           AVVIO
         ------------------------------ */
 
         loadSaved();
